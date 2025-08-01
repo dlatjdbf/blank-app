@@ -1,4 +1,6 @@
 import streamlit as st
+if "selected" not in st.session_state:
+    st.session_state.selected = None
 
 # 페이지 설정
 st.set_page_config(page_title="Dose to Food", layout="centered")
@@ -24,17 +26,13 @@ filtered = [d for d in drugs if query.lower() in d.lower()]
 cols = st.columns(3)
 for idx, drug in enumerate(filtered):
     with cols[idx % 3]:
-        if st.button(drug, key=drug):
-            st.write(f"Selected: **{drug}** – natural alternatives coming soon!")
+      
 
 # — 아래부터 상세 뷰 시작 —
 # Session State 초기화 (파일 최상단 한 번만 해 주셔도 됩니다)
 if "selected" not in st.session_state:
     st.session_state.selected = None
 
-# 버튼 클릭 시 선택 값 저장
-if st.button(drug, key=drug):
-    st.session_state.selected = drug
 
 # 선택된 약물이 있으면 상세 카드 렌더링
 if st.session_state.selected:
