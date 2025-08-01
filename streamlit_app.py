@@ -26,12 +26,10 @@ filtered = [d for d in drugs if query.lower() in d.lower()]
 cols = st.columns(3)
 for idx, drug in enumerate(filtered):
     with cols[idx % 3]:
-      
+ if st.button(drug, key=f"btn_{drug}"):
+            st.session_state.selected = drug     
 
-# — 아래부터 상세 뷰 시작 —
-# Session State 초기화 (파일 최상단 한 번만 해 주셔도 됩니다)
-if "selected" not in st.session_state:
-    st.session_state.selected = None
+
 
 
 # 선택된 약물이 있으면 상세 카드 렌더링
