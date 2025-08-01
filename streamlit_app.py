@@ -89,5 +89,9 @@ div[style*="background:#fde2e4"] *,
 div[style*="background:#fff3bf"] * {
     color: #000 !important;
 }
+/* 변비약 버튼만 배경 흰색으로 */
++  button[aria-label="변비약"] {
++      background-color: #fff !important;
++  }
 </style>
 """, unsafe_allow_html=True)
