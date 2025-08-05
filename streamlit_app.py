@@ -27,60 +27,58 @@ for idx, drug in enumerate(filtered):
     with cols[idx % 3]:
         clicked = st.button(drug, key=f"btn_{drug}")
         if clicked:
-            if st.session_state.selected == drug:
-                st.session_state.selected = None
-            else:
-                st.session_state.selected = drug
+            st.session_state.selected = None if st.session_state.selected == drug else drug
 
 # ─── 상세 뷰 ────────────────────────────────────────────────────
 if st.session_state.selected:
     info_map = {
         "변비약": {
             "side_effect": "과다 복용 시 설사, 복통 발생 가능",
-            "alternatives": ["Kiwi (100g)", "Xylobiose 5g"],
+            "alternatives": ["키위", "자일로바이오스"],
         },
         "수면제": {
-            "side_effect": "과다 복용 시 어지러움, 기억력 저하가 발생할 수 있습니다.",
-            "alternatives": [
-                "Celery & Lettuce",
-                "Milk",
-                "Kiwi",
-                "Oily Fish"
-            ],
+            "side_effect": "과다 복용 시 어지러움, 기억력 저하 발생 가능",
+            "alternatives": ["샐러리 & 상추", "우유", "키위", "등푸른생선"],
         },
     }
     sel = st.session_state.selected
-    info = info_map.get(sel, {})
+    info = info_map[sel]
 
-    # 카드 출력
-    for i, (label, bg) in enumerate(
-        [("약의 부작용", "#fde2e4"), *[
-            (f"대체 성분/음식 {j}", "#fff3bf")
-            for j, _ in enumerate(info.get("alternatives", []), start=1)
-        ]],
-        start=0
-    ):
-        content = info["side_effect"] if i == 0 else info["alternatives"][i-1]
+    # 부작용 카드
+    st.markdown(f"""
+<div style="
+    background:#fde2e4;
+    color:#000;
+    padding:16px;
+    border-radius:8px;
+    margin-bottom:12px;
+">
+    <strong>약의 부작용</strong><br>{info['side_effect']}
+</div>
+""", unsafe_allow_html=True)
+
+    # 대체 성분/음식 카드 (이제 이름만 한국어)
+    for alt in info["alternatives"]:
         st.markdown(f"""
-        <div style="
-            background:{bg};
-            color:#000;
-            padding:16px;
-            border-radius:8px;
-            margin-bottom:12px;
-        ">
-            <strong>{label}</strong><br>{content}
-        </div>
-        """, unsafe_allow_html=True)
+<div style="
+    background:#fff3bf;
+    color:#000;
+    padding:16px;
+    border-radius:8px;
+    margin-bottom:12px;
+">
+    <strong>{alt}</strong><br>
+    <!-- 상세 설명은 추후 추가 -->
+</div>
+""", unsafe_allow_html=True)
 
-# ─── CSS 스타일 (원형 버튼 배경 흰색으로) ─────────────────────────
+# ─── CSS 스타일 (원형 버튼 배경 흰색, 텍스트 검정) ─────────────
 st.markdown(
     """
     <style>
-      /* 버튼 원형, 배경을 흰색, 텍스트 검정 */
+      /* 버튼 원형, 배경 흰색, 텍스트 검정 */
       div.stButton > button {
-          width:100px;
-          height:100px;
+          width:100px; height:100px;
           border-radius:50%;
           background-color:#fff !important;
           color:#000 !important;
